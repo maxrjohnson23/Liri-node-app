@@ -14,12 +14,11 @@ const twitterClient = new Twitter(keys.twitter);
 
 // Use commander to handle commands and help info
 program.command('my-tweets').description('Retrieve your latest 20 tweets').action(retrieveTweets);
-program.command('spotify-this-song <song>').description('Retrieve Spotify information for song(s)').action(function(song){retrieveSong(song)});
+program.command('spotify-this-song <song>').description('Retrieve Spotify information for song(s)').action(song => retrieveSongInfo(song));
 // program.command('movie-this');
 // program.command('do-what-it-says');
 
 program.parse(process.argv);
-
 
 
 // my-tweets
@@ -40,7 +39,7 @@ function retrieveTweets() {
 }
 
 // spotify-this-song
-function retrieveSong(song) {
+function retrieveSongInfo(song) {
     spotifyClient.search({ type: 'track', query: song, limit: '5' }, function(err, data) {
         if (err) {
             return console.log('An error occurred: ' + err);
@@ -56,7 +55,9 @@ function retrieveSong(song) {
         });
     });
 }
+
 // movie-this
+
 
 // do-what-it-says
 
