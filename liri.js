@@ -40,7 +40,7 @@ function retrieveTweets() {
 
 // spotify-this-song
 function retrieveSongInfo(song) {
-    spotifyClient.search({ type: 'track', query: song, limit: '5' }, function(err, data) {
+    spotifyClient.search({type: 'track', query: song, limit: '5'}, function (err, data) {
         if (err) {
             return console.log('An error occurred: ' + err);
         }
