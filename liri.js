@@ -12,26 +12,24 @@ const program = require('commander');
 const spotifyApi = new Spotify(keys.spotify);
 const twitterClient = new Twitter(keys.twitter);
 
-program.command('my-tweets',).action(retrieveTweets);
-program.command('spotify-this-song').action(retrieveTweets);
-program.command('movie-this').action(retrieveTweets);
-program.command('do-what-it-says').action(retrieveTweets);
+program.command('my-tweets').description('Retrieve your latest 20 tweets').action(retrieveTweets);
+// program.command('spotify-this-song', 'Retrieve song information');
+// program.command('movie-this');
+// program.command('do-what-it-says');
 
 program.parse(process.argv);
 
 // my-tweets
 function retrieveTweets() {
-    // twitterClient.get('favorites/list', function(error, tweets, response) {
-    //     if(error) throw error;
-    //     console.log(tweets);  // The favorites.
-    //     console.log(response);  // Raw response object.
-    // });
-    console.log("Retrieving tweets");
-    twitterClient.get('statuses/user_timeline', { count: 20 }, function(error, tweets, response) {
-        if (!error) {
-            console.log(tweets);
+    twitterClient.get('statuses/user_timeline', {count: 20}, function (error, tweets, response) {
+        if (!error && response.statusCode === 200) {
+            console.log("#### Your Tweets ####");
+            tweets.forEach(t => {
+                console.log(`- ${t.text}`);
+            });
         }
         else {
+            console.log("An error occurred!");
             console.log(error);
         }
     });
