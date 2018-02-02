@@ -14,7 +14,7 @@ const twitterClient = new Twitter(keys.twitter);
 
 // Use commander to handle commands and help info
 program.command('my-tweets').description('Retrieve your latest 20 tweets').action(retrieveTweets);
-program.command('spotify-this-song <song>').description('Retrieve song information').action(function(song){retrieveSong(song)});
+program.command('spotify-this-song <song>').description('Retrieve Spotify information for song(s)').action(function(song){retrieveSong(song)});
 // program.command('movie-this');
 // program.command('do-what-it-says');
 
