@@ -14,9 +14,9 @@ const spotifyClient = new Spotify(keys.spotify);
 const twitterClient = new Twitter(keys.twitter);
 
 // Use commander to handle commands and help info
+// [param...] indicates multiple words can follow
 program.command('my-tweets').description('Retrieve your latest 20 tweets').action(retrieveTweets);
-// [param...] indicates multiple parameters or words can follow
-program.command('spotify-this-song [song...]').description('Retrieve Spotify information for song(s)').action(song => retrieveSongInfo(song));
+program.command('spotify-this-song [song...]').description('Retrieve song information from Spotify').action(song => retrieveSongInfo(song));
 program.command('movie-this [movie...]').description('Retrieve movie information from OMDB').action(movie => retrieveMovieInfo(movie));
 program.command('do-what-it-says').description('Perform functions defined in random.txt').action(performActionFromFile);
 
@@ -52,7 +52,7 @@ function retrieveSongInfo(song) {
         searchQuery = "The Sign - Ace of Base"
     }
 
-    spotifyClient.search({type: 'track', query: searchQuery, limit: '5'}, function (err, data) {
+    spotifyClient.search({type: 'track', query: searchQuery, limit: '10'}, function (err, data) {
         if (err) {
             return console.log('An error occurred: ' + err);
         }
