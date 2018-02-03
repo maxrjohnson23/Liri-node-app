@@ -123,28 +123,32 @@ function performActionFromFile() {
         // Contents specified as command-name,"Multiple params"
         let command = contents.slice(0, contents.indexOf(','));
         let params = contents.slice(contents.indexOf(',') + 1);
-
         // Remove quotes and arrayify the params
         params = params.replace(/"/g, '').split(" ");
-        console.log(params);
 
-        // determine which command to call
-        switch (command) {
-            case "my-tweets": {
-                retrieveTweets();
-                break;
-            }
-            case "spotify-this-song": {
-                retrieveSongInfo(params);
-                break;
-            }
-            case "movie-this": {
-                retrieveMovieInfo(params);
-                break;
-            }
-            default: {
-                console.log('Invalid command specified');
-            }
-        }
+        executeCommand(command, params);
     })
+}
+
+// execute specified command with params
+function executeCommand(command, params) {
+
+    // determine which command to call
+    switch (command) {
+        case "my-tweets": {
+            retrieveTweets();
+            break;
+        }
+        case "spotify-this-song": {
+            retrieveSongInfo(params);
+            break;
+        }
+        case "movie-this": {
+            retrieveMovieInfo(params);
+            break;
+        }
+        default: {
+            console.log('Invalid command specified');
+        }
+    }
 }
