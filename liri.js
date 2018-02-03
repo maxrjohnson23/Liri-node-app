@@ -89,7 +89,7 @@ function retrieveMovieInfo(movie) {
 
             if (movieData.Error) {
                 // API error indicated in the body
-                console.log(`An error occurred: ${movieData}`);
+                console.log(`An error occurred: ${movieData.Error}`);
             } else {
                 // Call was successful, print the movie data
                 printMovieData(movieData);
