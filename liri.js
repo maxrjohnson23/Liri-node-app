@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Import dependencies
 require('dotenv').config();
+const fs = require('fs');
 const keys = require('./keys.js');
 const Twitter = require('twitter');
 const Spotify = require('node-spotify-api');
@@ -16,8 +17,10 @@ const twitterClient = new Twitter(keys.twitter);
 program.command('my-tweets').description('Retrieve your latest 20 tweets').action(retrieveTweets);
 // [song...] indicates multiple parameters or words can follow
 program.command('spotify-this-song [song...]').description('Retrieve Spotify information for song(s)').action(song => retrieveSongInfo(song));
-// program.command('movie-this');
+program.command('movie-this [movie...]').description('Retrieve movie information from OMDB').action(movie => retrieveMovieInfo(movie));
+program.command('do-what-it-says').description('Perform functions defined in random.txt').action(performActionFromFile);
 // program.command('do-what-it-says');
+// program.command('movie-this');
 
 program.parse(process.argv);
 
@@ -41,12 +44,13 @@ function retrieveTweets() {
 // spotify-this-song
 function retrieveSongInfo(song) {
     let searchQuery = null;
-    if (song) {
+    if (song.length !== 0) {
         // Song name can have multiple words
         searchQuery = song.join(" ");
     } else {
         // Default to "The Sign" by Ace of Base
-        searchQuery = "The Sign"
+        console.log('No track specified - here\'s one for you');
+        searchQuery = "The Sign - Ace of Base"
     }
 
     spotifyClient.search({type: 'track', query: searchQuery, limit: '5'}, function (err, data) {
@@ -67,6 +71,45 @@ function retrieveSongInfo(song) {
 }
 
 // movie-this
+function retrieveMovieInfo(movie) {
+    let movieQuery = null;
+    if (movie.length !== 0) {
+        // Movie name can have multiple words
+        movieQuery = movie.join(" ");
+    } else {
+        // If no movie provided, default to Mr. Nobody
+        movieQuery = "Mr. Nobody";
+    }
+
+    request(`http://www.omdbapi.com/?apikey=${keys.omdb.key}&t=${movieQuery}`, (err, res, body) => {
+        if (err) {
+            console.log(`An error occurred: ${err}`);
+        } else {
+            let movieData = JSON.parse(body);
+
+            if (movieData.Error) {
+                // API error indicated in the body
+                console.log(`An error occurred: ${movieData}`);
+            } else {
+                // Call was successful, print the movie data
+                printMovieData(movieData);
+            }
+        }
+    })
+}
+
+// helper function for formatting movie data
+function printMovieData(movieData) {
+    console.log('#### OMDB Movie Information ####');
+    console.log(`Title: ${movieData.Title}`);
+    console.log(`Year released: ${movieData.Year}`);
+    console.log(`IMDB Rating: ${movieData.imdbRating}`);
+    // Search array of rating sources for Rotten Tomatoes
+    console.log(`Rotten Tomatoes Rating: ${movieData.Ratings.find(r => r.Source === 'Rotten Tomatoes').Value}`);
+    console.log(`Countries of production: ${movieData.Language}`);
+    console.log(`Plot: ${movieData.Plot}`);
+    console.log(`Actors: ${movieData.Actors}`);
+}
 
 
 // do-what-it-says
