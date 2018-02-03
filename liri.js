@@ -9,21 +9,19 @@ const request = require('request');
 const program = require('commander');
 
 
-// Configure apps with key information
+// Configure apps with api keys information
 const spotifyClient = new Spotify(keys.spotify);
 const twitterClient = new Twitter(keys.twitter);
 
 // Use commander to handle commands and help info
 program.command('my-tweets').description('Retrieve your latest 20 tweets').action(retrieveTweets);
-// [song...] indicates multiple parameters or words can follow
+// [param...] indicates multiple parameters or words can follow
 program.command('spotify-this-song [song...]').description('Retrieve Spotify information for song(s)').action(song => retrieveSongInfo(song));
 program.command('movie-this [movie...]').description('Retrieve movie information from OMDB').action(movie => retrieveMovieInfo(movie));
 program.command('do-what-it-says').description('Perform functions defined in random.txt').action(performActionFromFile);
-// program.command('do-what-it-says');
-// program.command('movie-this');
 
+// Parse command line arguments
 program.parse(process.argv);
-
 
 // my-tweets
 function retrieveTweets() {
@@ -40,6 +38,7 @@ function retrieveTweets() {
         }
     });
 }
+
 
 // spotify-this-song
 function retrieveSongInfo(song) {
@@ -58,16 +57,19 @@ function retrieveSongInfo(song) {
             return console.log('An error occurred: ' + err);
         }
 
-        // Display track information in the console
-        data.tracks.items.forEach(s => {
-            console.log("##### Song Info #####");
-            console.log(`Artist: ${s.artists.map(a => a.name)}`);
-            console.log(`Song Name: ${s.name}`);
-            console.log(`Album: ${s.album.name}`);
-            console.log(`Preview: ${s.preview_url || "<link not available>"}`);
-            console.log('\n');
-        });
+        // Print track information for each song
+        data.tracks.items.forEach(s => printSongData(s));
     });
+}
+
+// format and print song information
+function printSongData(song) {
+    console.log("##### Song Info #####");
+    console.log(`Artist: ${song.artists.map(a => a.name)}`);
+    console.log(`Song Name: ${song.name}`);
+    console.log(`Album: ${song.album.name}`);
+    console.log(`Preview: ${song.preview_url || "<link not available>"}`);
+    console.log('\n');
 }
 
 // movie-this
