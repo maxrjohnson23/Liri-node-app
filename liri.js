@@ -14,7 +14,8 @@ const twitterClient = new Twitter(keys.twitter);
 
 // Use commander to handle commands and help info
 program.command('my-tweets').description('Retrieve your latest 20 tweets').action(retrieveTweets);
-program.command('spotify-this-song <song>').description('Retrieve Spotify information for song(s)').action(song => retrieveSongInfo(song));
+// [song...] indicates multiple parameters or words can follow
+program.command('spotify-this-song [song...]').description('Retrieve Spotify information for song(s)').action(song => retrieveSongInfo(song));
 // program.command('movie-this');
 // program.command('do-what-it-says');
 
@@ -33,24 +34,33 @@ function retrieveTweets() {
             tweets.forEach(t => {
                 console.log(`${t.created_at} : ${t.text}`);
             });
-
         }
     });
 }
 
 // spotify-this-song
 function retrieveSongInfo(song) {
-    spotifyClient.search({type: 'track', query: song, limit: '5'}, function (err, data) {
+    let searchQuery = null;
+    if (song) {
+        // Song name can have multiple words
+        searchQuery = song.join(" ");
+    } else {
+        // Default to "The Sign" by Ace of Base
+        searchQuery = "The Sign"
+    }
+
+    spotifyClient.search({type: 'track', query: searchQuery, limit: '5'}, function (err, data) {
         if (err) {
             return console.log('An error occurred: ' + err);
         }
 
+        // Display track information in the console
         data.tracks.items.forEach(s => {
             console.log("##### Song Info #####");
             console.log(`Artist: ${s.artists.map(a => a.name)}`);
             console.log(`Song Name: ${s.name}`);
             console.log(`Album: ${s.album.name}`);
-            console.log(`Preview: ${s.preview_url}`);
+            console.log(`Preview: ${s.preview_url || "<link not available>"}`);
             console.log('\n');
         });
     });
