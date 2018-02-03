@@ -41,28 +41,32 @@ See the --help flag for available commands and usage
 ```
 $ node liri.js --help
 ```
-![Liri Help](sample/help.jpg?raw=true)
+![Liri Help](samples/help.jpg?raw=true)
 
 #### my-tweets
 Retrieve your last twenty tweets from Twitter
 ```
  $ node liri.js my-tweets
 ```
+![Liri Tweets](samples/tweets.jpg?raw=true)
 
 #### spotify-this-song \<song name>
 Retrieve track information from Spotify.  If multiple are found, the first ten will be displayed.
 ```
  $ node liri.js spotify-this-song "Kickstart my Heart"
 ```
+![Liri Spotify](samples/spotify.jpg?raw=true)
 
 #### movie-this \<movie name>
 Retrieve movie information from OMDB.
 ```
  $ node liri.js movie-this "Superbad"
 ```
+![Liri Movie](samples/movie.jpg?raw=true)
 
 #### do-what-it-says
 Reads a request from a file named "random.txt" in the directory.  The format is: command,"parameters"
 ```
  $ node liri.js do-what-it-says
 ```
+![Liri Do What it Says](samples/dowhat.jpg?raw=true)
