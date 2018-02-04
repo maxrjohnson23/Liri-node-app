@@ -31,10 +31,12 @@ function retrieveTweets() {
             console.log(err);
         }
         else {
-            console.log('#### Your Tweets ####');
+            let userName = tweets[0].user.screen_name;
+            console.log(`------------- Tweets for ${userName} --------------`);
             tweets.forEach(t => {
                 console.log(`${t.created_at} : ${t.text}`);
             });
+            console.log('---------------------------------------------------\n');
         }
     });
 }
@@ -64,12 +66,12 @@ function retrieveSongInfo(song) {
 
 // format and print song information
 function printSongData(song) {
-    console.log("##### Song Info #####");
+    console.log("-------------------- Song Info --------------------");
     console.log(`Artist: ${song.artists.map(a => a.name)}`);
     console.log(`Song Name: ${song.name}`);
     console.log(`Album: ${song.album.name}`);
     console.log(`Preview: ${song.preview_url || "<link not available>"}`);
-    console.log('\n');
+    console.log('---------------------------------------------------\n');
 }
 
 // movie-this
@@ -102,7 +104,7 @@ function retrieveMovieInfo(movie) {
 
 // helper function for formatting movie data
 function printMovieData(movieData) {
-    console.log('#### OMDB Movie Information ####');
+    console.log('------------- OMDB Movie Information --------------');
     console.log(`Title: ${movieData.Title}`);
     console.log(`Year released: ${movieData.Year}`);
     console.log(`IMDB Rating: ${movieData.imdbRating}`);
@@ -111,6 +113,8 @@ function printMovieData(movieData) {
     console.log(`Countries of production: ${movieData.Language}`);
     console.log(`Plot: ${movieData.Plot}`);
     console.log(`Actors: ${movieData.Actors}`);
+    console.log('---------------------------------------------------\n');
+
 }
 
 
